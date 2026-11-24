@@ -23,7 +23,7 @@
 | Plan lifecycle | CLI and validation | stable | yes | yes | Evidence required for landed slices and retirement |
 | Decision register | CLI and validation | stable | yes | yes | Date+slug IDs; guard paths validated |
 | Manual verification | CLI and validation | stable | yes | yes | Explicit human confirmation and build required |
-| Governance check | CLI and validation | stable | yes | yes | Frontmatter, indexes, links, expiry, stale warnings |
+| Governance check | CLI and validation | stable | yes | yes | Frontmatter, indexes, links, expiry, stale warnings; first public CI 4/4 green |
 | Progress report | CLI and validation | stable | yes | yes | Derived next slice and backlog |
 | Test selection | CLI and validation | preview | yes | yes | Path-based; conservative fallback; no dependency graph |
 | Trilingual README | Documentation | stable | yes | yes | English, French, and Simplified Chinese |

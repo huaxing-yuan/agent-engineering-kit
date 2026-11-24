@@ -16,7 +16,7 @@ updated: '2026-11-24'
 | Plan lifecycle | stable | yes | yes | Evidence required for landed slices and retirement |
 | Decision register | stable | yes | yes | Date+slug IDs; guard paths validated |
 | Manual verification | stable | yes | yes | Explicit human confirmation and build required |
-| Governance check | stable | yes | yes | Frontmatter, indexes, links, expiry, stale warnings |
+| Governance check | stable | yes | yes | Frontmatter, indexes, links, expiry, stale warnings; first public CI 4/4 green |
 | Progress report | stable | yes | yes | Derived next slice and backlog |
 | Test selection | preview | yes | yes | Path-based; conservative fallback; no dependency graph |
 

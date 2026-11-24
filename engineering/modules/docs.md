@@ -25,7 +25,7 @@ None.
 ## KPI
 
 - Documentation coverage: three README entry points plus seven focused guides.
-- Test evidence: published-source sanitization and CI link/runtime checks.
+- Test evidence: published-source sanitization, CI link/runtime checks, and fresh-clone verification.
 - Last maturity review: 2026-11-24.
 
 ## Roadmap
