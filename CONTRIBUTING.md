@@ -23,8 +23,9 @@ aeng check
 ## Pull request checklist
 
 - [ ] Tests pass and prove the intended behavior.
-- [ ] `aeng check` passes.
+- [ ] `aeng check` and `aeng docs check` pass.
 - [ ] Existing files are preserved by initialization.
+- [ ] Documentation impact is reported for user-visible changes.
 - [ ] CLI help and documentation match the implementation.
 - [ ] No secrets or private identifiers were introduced.
 - [ ] User-visible behavior has documentation impact.
@@ -33,7 +34,8 @@ aeng check
 
 - [ ] Version updated.
 - [ ] Clean clone install succeeds.
-- [ ] Sample application tests pass.
+- [ ] Sample application tests and documentation checks pass.
+- [ ] Pulse preview runs; a persisted baseline is updated only when intended.
 - [ ] English, French, and Chinese README links resolve.
 - [ ] Public repository contains no private history or artifacts.
 - [ ] Known limitations are stated accurately.

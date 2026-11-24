@@ -19,6 +19,10 @@ updated: '2026-11-24'
 | Governance check | stable | yes | yes | Frontmatter, indexes, links, expiry, stale warnings; first public CI 4/4 green |
 | Progress report | stable | yes | yes | Derived next slice and backlog |
 | Test selection | preview | yes | yes | Path-based; conservative fallback; no dependency graph |
+| Documentation impact | stable | yes | yes | Source-to-page mapping with explicit semantic-review boundary |
+| Documentation check | stable | yes | yes | Links, traceability, screenshots, and technical-note metadata |
+| Documentation audit | stable | yes | yes | Structural findings plus mandatory human checklist |
+| Pulse | stable | yes | yes | Persistent latest.json baseline and dated Markdown report |
 
 ## Active plans
 

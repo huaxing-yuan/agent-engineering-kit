@@ -1,15 +1,37 @@
-# Technical note template
+---
+id: technical-note-id
+status: proposed
+updated: 2026-01-01
+reviewed_against: ""
+owners: [module-id]
+source_paths: []
+related_decisions: []
+superseded_by: ""
+---
 
-## Status
-
-Proposed | accepted | as-built | superseded
+# Technical note title
 
 ## Scope
 
+What this note covers and what it does not.
+
 ## Evidence
 
-## Design
+Measurements, tests, source references, and their date or commit.
 
-## Consequences
+## Current design
 
-## Related decisions and plans
+The as-built structure and behavior. If the note is proposed, state the proposal instead.
+
+## Invariants
+
+Rules that must remain true.
+
+## Failure modes
+
+Known limits, degradation behavior, and operational consequences.
+
+## Related decisions and tests
+
+- Decision:
+- Test:

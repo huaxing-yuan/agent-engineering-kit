@@ -20,8 +20,9 @@ Steps:
 5. Present the create/preserve plan, conflicts, unknown commands, and any existing engineering directory.
 6. Wait for approval.
 7. Run `aeng init`. Use `--adopt-existing` only for an explicitly approved existing engineering/ directory.
-8. Run `aeng check`. Fix only problems introduced by initialization.
-9. Run `aeng report`.
+8. Run `aeng check`.
+9. If documentation is configured, preview and run `aeng docs init`, then run `aeng docs check` and `aeng docs impact --base main`.
+10. Run `aeng report`. Do not enable Pulse unless the user approves it.
 
 Final response:
 - Installed files.

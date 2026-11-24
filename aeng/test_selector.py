@@ -5,7 +5,7 @@ import subprocess
 from pathlib import Path
 from typing import Any
 
-from .config import load_config, path_matches_any
+from .config import path_matches_any
 
 
 def changed_files(root: Path, base: str | None = None) -> list[str]:
@@ -16,7 +16,7 @@ def changed_files(root: Path, base: str | None = None) -> list[str]:
         return [line for line in completed.stdout.splitlines() if line]
 
     if base:
-        return run(["diff", "--name-only", base])
+        return sorted(set(run(["diff", "--name-only", base]) + run(["ls-files", "--others", "--exclude-standard"])))
     head = subprocess.run(["git", "rev-parse", "--verify", "HEAD"], cwd=root, capture_output=True, check=False)
     tracked = run(["diff", "--name-only", "HEAD"]) if head.returncode == 0 else []
     untracked = run(["ls-files", "--others", "--exclude-standard"])

@@ -40,6 +40,39 @@ test:
 verification:
   stale_days: 30
   ui: false
+documentation:
+  root: docs
+  locales: [en]
+  translation_policy: readmes-only
+  build_command: ""
+  pages:
+    - path: README.md
+      source_patterns: [aeng/**, pyproject.toml]
+    - path: README.fr.md
+      source_patterns: [aeng/**, pyproject.toml]
+    - path: README.zh-CN.md
+      source_patterns: [aeng/**, pyproject.toml]
+    - path: docs/CONFIGURATION.md
+      source_patterns: [aeng/config.py, aeng/docs.py, aeng/pulse.py]
+    - path: docs/TESTING.md
+      source_patterns: [aeng/test_selector.py, aeng/validator.py, aeng/docs.py]
+    - path: docs/DOCUMENTATION.md
+      source_patterns: [aeng/docs.py, aeng/templates/project/docs/**, aeng/templates/project/engineering/technical/**]
+    - path: docs/DOCUMENT_AUDIT.md
+      source_patterns: [aeng/docs.py]
+    - path: docs/PULSE.md
+      source_patterns: [aeng/pulse.py]
+    - path: docs/APPLICABILITY.md
+      source_patterns: [aeng/config.py, aeng/pulse.py]
+  screenshots:
+    index: docs/screenshot-index.md
+    required: false
+  search_index:
+    generated_at: release
+    committed: false
+pulse:
+  enabled: true
+  stale_days: 7
 existing:
   agent_files: []
   instruction_files: []

@@ -1,0 +1,86 @@
+{
+  "version": 1,
+  "generated": "2026-11-24",
+  "previous": null,
+  "head": "6133b23",
+  "branch": "main",
+  "project": "agent-engineering-kit",
+  "plans": [],
+  "plan_status_counts": {},
+  "manual_status_counts": {},
+  "open_manual": [],
+  "decisions": 6,
+  "documentation": {
+    "configured": true,
+    "root": "docs",
+    "pages": 13,
+    "pages_by_locale": {
+      "root": 13
+    },
+    "screenshots": {
+      "captured": 0,
+      "obsolete": 0,
+      "placeholder": 0,
+      "stale": 0,
+      "verified": 0
+    },
+    "technical_notes": {
+      "current": 0,
+      "proposed": 1,
+      "superseded": 0
+    },
+    "doc_gaps": 0
+  },
+  "modules": [
+    {
+      "id": "cli",
+      "name": "CLI and validation",
+      "updated": "2026-11-24",
+      "maturity": {
+        "stable": 11,
+        "preview": 1
+      },
+      "doc_gaps": 0
+    },
+    {
+      "id": "docs",
+      "name": "Documentation",
+      "updated": "2026-11-24",
+      "maturity": {
+        "stable": 10
+      },
+      "doc_gaps": 0
+    },
+    {
+      "id": "sample",
+      "name": "Sample application",
+      "updated": "2026-11-24",
+      "maturity": {
+        "stable": 3,
+        "planned": 1
+      },
+      "doc_gaps": 0
+    },
+    {
+      "id": "templates",
+      "name": "Templates",
+      "updated": "2026-11-24",
+      "maturity": {
+        "stable": 8
+      },
+      "doc_gaps": 0
+    }
+  ],
+  "changes": {
+    "new_plans": [],
+    "retired_plans": [],
+    "changed_plans": []
+  },
+  "baseline": true,
+  "limits": [
+    "Plan movement is inferred from plan metadata and slice status, not code completeness.",
+    "Documentation metrics are structural; semantic truth requires human review.",
+    "Screenshots require build-specific human verification.",
+    "A CI artifact is not a persistent baseline until it is committed or otherwise retained."
+  ]
+}

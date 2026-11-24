@@ -51,6 +51,22 @@ aeng check
 aeng report
 ```
 
+If documentation is configured, install its templates explicitly and validate it:
+
+```bash
+aeng docs init --dry-run
+aeng docs init
+aeng docs check
+aeng docs impact --base main
+```
+
+Pulse is optional:
+
+```bash
+aeng pulse
+aeng pulse --write
+```
+
 For an existing `engineering/` directory:
 
 ```bash

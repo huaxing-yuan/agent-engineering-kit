@@ -29,7 +29,13 @@ jobs:
         run: python tools/verify_wheel.py dist
       - name: Governance check
         run: aeng check
+      - name: Documentation check
+        run: aeng docs check
+      - name: Pulse preview
+        run: aeng pulse
       - name: Sample governance check
         run: aeng --root examples/sample-app check
+      - name: Sample documentation check
+        run: aeng --root examples/sample-app docs check
       - name: Sample tests
         run: python -m unittest discover -s examples/sample-app/tests -v

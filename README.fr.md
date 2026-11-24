@@ -15,6 +15,7 @@ Le kit est indépendant de l'agent hôte. Il fonctionne avec tout agent capable 
 - Un ensemble compact de contrats Markdown et de modèles.
 - Une CLI Python qui découvre la structure du projet, initialise sans écraser, génère les index, valide les écritures de suivi et produit un rapport de progression.
 - Un modèle de vérification qui distingue tests unitaires, d'intégration, headless, processus réel, services externes et vérification manuelle.
+- L'analyse d'impact documentaire, le contrôle de traçabilité et de captures, la validation des notes techniques et un baseline Pulse optionnel.
 - Un parcours d'adoption qui préserve les `AGENTS.md`, `CLAUDE.md`, instructions et documents d'ingénierie existants.
 
 ## Ce qu'il n'est pas
@@ -102,7 +103,24 @@ aeng check
 aeng report
 ```
 
+Si la documentation est configurée :
+
+```bash
+aeng docs init --dry-run
+aeng docs init
+aeng docs check
+aeng docs impact --base main
+```
+
+Pulse est optionnel et désactivé par défaut :
+
+```bash
+aeng pulse
+aeng pulse --write
+```
+
 `aeng init` n'écrase jamais un `AGENTS.md`, `CLAUDE.md`, fichier d'instructions, carte de module ou document d'ingénierie existant. Si `engineering/` existe déjà, utilisez `--adopt-existing` pour n'ajouter que les fichiers manquants.
+Les modèles de documentation sont explicites : `aeng docs init` ne remplace jamais un manuel ou un fichier de style existant.
 
 ## Faire initialiser le projet par un agent de code
 
@@ -116,8 +134,9 @@ Initialise agent-engineering-kit dans ce dépôt.
 3. N'écrase aucune règle d'agent ni aucun artefact d'ingénierie existant.
 4. Exécute `aeng init --dry-run` et présente le plan d'adoption et les conflits.
 5. Attends mon approbation, puis exécute `aeng init` (utilise --adopt-existing seulement si j'approuve l'adoption d'un engineering/ existant).
-6. Exécute `aeng check`, corrige uniquement les problèmes d'initialisation, puis `aeng report`.
-7. Résume ce qui a été installé, préservé, ce qui demande une revue et quelles commandes restent inconnues.
+6. Exécute `aeng check`. Si la documentation est configurée, prévisualise puis exécute `aeng docs init`, puis `aeng docs check` et `aeng docs impact --base main`.
+7. Exécute `aeng report`. N'active Pulse que si je l'approuve.
+8. Résume ce qui a été installé, préservé, ce qui demande une revue et quelles commandes restent inconnues.
 ```
 
 L'agent doit inspecter le dépôt, pas inventer les frontières de modules ni annoncer des commandes de test réussies.
@@ -149,6 +168,15 @@ engineering/
 .agent-engineering/
   adoption-report.md
   integration-block.md                 # si un contrat d'agent existant a été préservé
+```
+
+Les modèles de documentation s'installent séparément avec `aeng docs init` :
+
+```text
+docs/
+  STYLE.md
+  TRACEABILITY.md
+  screenshot-index.md
 ```
 
 Les instructions existantes ne sont ni déplacées ni réécrites. Celles du kit vivent dans un répertoire dédié afin de coexister avec les règles du projet ou de l'hôte.
@@ -222,6 +250,40 @@ Règles importantes :
 
 Si le dépôt contient un produit agent, ajoutez une piste d'évaluation orthogonale pour les schémas d'outils, la visibilité des rôles, les permissions, les confirmations, les trajectoires de référence et les artefacts finaux.
 
+## Gouvernance de la documentation
+
+Le kit sépare le manuel utilisateur, les notes techniques internes et le suivi d'ingénierie.
+
+- Le manuel est centré sur les tâches et ne contient aucun détail d'implémentation interne.
+- `aeng docs impact` associe les changements source aux pages candidates et aux lacunes.
+- `aeng docs check` valide liens, traçabilité, captures et frontmatter des notes techniques.
+- `aeng docs audit` combine les constats structurels et une revue sémantique humaine.
+- Une note technique courante exige une date de revue, un commit et des chemins source résolubles.
+- Les captures exigent une vérification humaine sur le build cible.
+- Les index de recherche sont des artefacts de release sauf décision contraire.
+
+Voir [docs/DOCUMENTATION.md](docs/DOCUMENTATION.md) et [docs/DOCUMENT_AUDIT.md](docs/DOCUMENT_AUDIT.md).
+
+## Pulse
+
+`aeng pulse` dérive un instantané à partir des plans, cartes de modules, décisions, tests manuels et métriques documentaires.
+
+- `latest.json` est le baseline persistant.
+- Un rapport Markdown daté est généré pour les humains.
+- Un artefact CI n'est pas un baseline tant qu'il n'est pas conservé ou commité.
+- Pulse est optionnel et désactivé par défaut.
+
+Voir [docs/PULSE.md](docs/PULSE.md).
+
+## Projets adaptés
+
+- **Personnel ou prototype** : profil minimal, sans Pulse planifié.
+- **Petite équipe ou produit maintenu** : profil standard, contrôles docs et Pulse hebdomadaire optionnel.
+- **Multi-équipe ou multi-dépôt** : propriété explicite, baselines conservés et worktrees isolés.
+- **Réglementé ou critique** : le kit appuie les preuves, il ne remplace pas le système de conformité.
+
+Voir [docs/APPLICABILITY.md](docs/APPLICABILITY.md).
+
 ## Réutilisation et précautions
 
 ### À réutiliser directement
@@ -266,6 +328,12 @@ Voir [docs/ADOPTION_GUIDE.md](docs/ADOPTION_GUIDE.md).
 | `aeng check` | Échouer sur un artefact invalide ou périmé |
 | `aeng index` | Régénérer les index et `PROJECT.md` |
 | `aeng report` | Afficher la progression dérivée |
+| `aeng docs init` | Installer les modèles de documentation manquants |
+| `aeng docs impact` | Associer les changements source aux pages |
+| `aeng docs check` | Valider structure et traçabilité |
+| `aeng docs audit` | Écrire un audit structurel et la revue humaine |
+| `aeng pulse` | Générer un instantané de progression |
+| `aeng pulse --write` | Conserver le baseline et le rapport daté |
 | `aeng plan new` | Créer un plan actif |
 | `aeng plan add-slice` | Ajouter une tranche atomique |
 | `aeng plan set-slice` | Mettre à jour statut et preuve |
@@ -285,6 +353,10 @@ Utilisez `aeng <command> --help`. Placez l'option globale `--root` avant la comm
 - [Prompt d'initialisation](docs/AGENT_INITIALIZATION.md)
 - [Guide d'adoption](docs/ADOPTION_GUIDE.md)
 - [Configuration](docs/CONFIGURATION.md)
+- [Gouvernance de la documentation](docs/DOCUMENTATION.md)
+- [Audit documentaire](docs/DOCUMENT_AUDIT.md)
+- [Pulse](docs/PULSE.md)
+- [Projets adaptés](docs/APPLICABILITY.md)
 - [Cycle de vie](docs/LIFECYCLE.md)
 - [Stratégie de tests](docs/TESTING.md)
 - [Sécurité](SECURITY.md)
@@ -292,11 +364,12 @@ Utilisez `aeng <command> --help`. Placez l'option globale `--root` avant la comm
 
 ## Limites actuelles
 
-La version 0.1 est volontairement petite :
+La version 0.2 est volontairement petite :
 
 - La sélection des tests est basée sur les chemins, pas sur un graphe de dépendances.
 - L'analyse des tranches Markdown attend la forme documentée du tableau.
 - L'intégration GitHub utilise la CLI et reste optionnelle ; il n'y a pas de service de synchronisation.
+- Pulse exige un baseline explicitement conservé pour une comparaison continue.
 - Pas de GUI, de dashboard hébergé ni de workflow multi-dépôt `moved`.
 - Les schémas JSON ne sont pas encore livrés ; la validation vit dans la CLI et les tests.
 - L'exemple est synthétique et ne prouve pas l'adéquation à toutes les stacks.

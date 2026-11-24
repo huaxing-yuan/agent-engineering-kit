@@ -65,6 +65,31 @@ def validate_config(config: dict[str, Any]) -> None:
     verification = config.get("verification", {})
     if not isinstance(verification.get("stale_days", 30), int):
         raise ValueError("verification.stale_days must be an integer")
+    documentation = config.get("documentation")
+    if documentation is not None:
+        if not isinstance(documentation, dict) or not documentation.get("root"):
+            raise ValueError("documentation.root is required when documentation is configured")
+        locales = documentation.get("locales", [])
+        if not isinstance(locales, list):
+            raise ValueError("documentation.locales must be a list")
+        pages = documentation.get("pages", [])
+        if not isinstance(pages, list):
+            raise ValueError("documentation.pages must be a list")
+        for page in pages:
+            if not isinstance(page, dict) or not page.get("path"):
+                raise ValueError("each documentation page needs a path")
+            if not isinstance(page.get("source_patterns", []), list):
+                raise ValueError(f"documentation page {page['path']}: source_patterns must be a list")
+        screenshots = documentation.get("screenshots", {})
+        if screenshots and not isinstance(screenshots, dict):
+            raise ValueError("documentation.screenshots must be a mapping")
+        if screenshots and not screenshots.get("index"):
+            raise ValueError("documentation.screenshots.index is required")
+    pulse = config.get("pulse", {})
+    if not isinstance(pulse, dict):
+        raise ValueError("pulse must be a mapping")
+    if not isinstance(pulse.get("stale_days", 7), int):
+        raise ValueError("pulse.stale_days must be an integer")
 
 
 def matches(path: str, pattern: str) -> bool:
@@ -152,6 +177,23 @@ def discover(root: Path) -> dict[str, Any]:
     docs_root = next((name for name in ["docs", "documentation", "doc"] if (root / name).is_dir()), "docs")
     existing = [name for name in INSTRUCTION_FILES if (root / name).exists()]
     default_command = _detect_test_command(root, source_roots)
+    documentation = None
+    if (root / docs_root).is_dir():
+        documentation = {
+            "root": docs_root,
+            "locales": ["en"],
+            "translation_policy": "declared-only",
+            "build_command": "",
+            "pages": [],
+            "screenshots": {
+                "index": f"{docs_root}/screenshot-index.md",
+                "required": False,
+            },
+            "search_index": {
+                "generated_at": "release",
+                "committed": False,
+            },
+        }
     return {
         "version": 1,
         "project": {
@@ -178,6 +220,11 @@ def discover(root: Path) -> dict[str, Any]:
         "verification": {
             "stale_days": 30,
             "ui": any((root / name).is_dir() for name in ["ui", "web", "frontend"]) or any(lang in languages for lang in ["javascript", "typescript"]),
+        },
+        **({"documentation": documentation} if documentation else {}),
+        "pulse": {
+            "enabled": False,
+            "stale_days": 7,
         },
         "existing": {
             "agent_files": [name for name in existing if name in {"AGENTS.md", "CLAUDE.md", "GEMINI.md"}],

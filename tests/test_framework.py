@@ -221,6 +221,11 @@ class TestSelectionTests(ProjectCase):
             self.assertIn("src/core/first.py", selection["files"])
             self.assertIn("core", selection["areas"])
 
+    def test_base_diff_includes_untracked_files(self):
+        (self.root / "src/core/new.py").write_text("VALUE = 2\n", encoding="utf-8")
+        selection = select_tests(self.root, load_config(self.root), base="HEAD")
+        self.assertIn("src/core/new.py", selection["files"])
+
     def test_build_configuration_forces_fallback(self):
         (self.root / "pyproject.toml").write_text("[project]\nname='sample'\n", encoding="utf-8")
         selection = select_tests(self.root, load_config(self.root))
@@ -231,7 +236,11 @@ class TestSelectionTests(ProjectCase):
 class SanitizationTests(unittest.TestCase):
     def test_published_sources_contain_no_private_project_identifiers(self):
         root = Path(__file__).resolve().parents[1]
-        forbidden = ["ae" + "thrix", "aval" + "onia", "humming" + "bird", ".n" + "et 11"]
+        forbidden = [
+            "ae" + "thrix", "aval" + "onia", "humming" + "bird", ".n" + "et 11",
+            "importapiwindow" + "body", "manual" + "request", "message" + "queue",
+            "baseoauth" + "2flow", "safethemed" + "image", "nova" + "windows",
+        ]
         paths = [root / "README.md", root / "README.fr.md", root / "README.zh-CN.md"]
         paths += list((root / "aeng").rglob("*"))
         paths += list((root / "docs").rglob("*.md"))

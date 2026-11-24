@@ -25,6 +25,23 @@ test:
 verification:
   stale_days: 30
   ui: false
+documentation:
+  root: docs
+  locales: [en]
+  translation_policy: declared-only
+  build_command: ""
+  pages:
+    - path: docs/index.md
+      source_patterns: [src/sample_app/**]
+  screenshots:
+    index: docs/screenshot-index.md
+    required: false
+  search_index:
+    generated_at: release
+    committed: false
+pulse:
+  enabled: false
+  stale_days: 7
 existing:
   agent_files: []
   instruction_files: []

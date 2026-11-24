@@ -91,6 +91,20 @@ Classify each entry:
 
 Do not mark entries `verified` merely because code exists.
 
+## Existing documentation
+
+Normal `aeng init` does not modify an existing documentation tree.
+
+1. Configure `documentation.root` and page mappings.
+2. Run `aeng docs init --dry-run`.
+3. Install only missing `STYLE.md`, `TRACEABILITY.md`, and `screenshot-index.md`.
+4. Keep existing project style if it is authoritative; merge missing rules deliberately.
+5. Add source mappings incrementally, starting with high-traffic pages.
+6. Run `aeng docs check` and fix structural issues before claiming documentation governance.
+7. Keep user manuals separate from `engineering/technical/`.
+
+Do not copy private product manuals, screenshots, internal hostnames, or architecture notes into a public example repository.
+
 ## CI adoption
 
 Start with reporting mode if the repository has known failures, but record an expiry for every allowlisted failure. Then move to blocking mode.

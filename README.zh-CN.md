@@ -15,6 +15,7 @@ Agent Engineering Kit 补上代码本身无法告诉新会话的信息：当前�
 - 一组精简的 Markdown 契约与模板。
 - 一个 Python CLI，用于发现项目结构、安全初始化、生成索引、校验回写和汇报进度。
 - 一套区分单元、集成、headless、真实进程、外部 live 和人工验证的测试模型。
+- 文档影响分析、溯源与截图检查、内部技术文档校验，以及可选的 Pulse 基线。
 - 一条保留现有 `AGENTS.md`、`CLAUDE.md`、instructions 和工程文档的采用路径。
 
 ## 它不是
@@ -102,7 +103,24 @@ aeng check
 aeng report
 ```
 
+如果配置了文档：
+
+```bash
+aeng docs init --dry-run
+aeng docs init
+aeng docs check
+aeng docs impact --base main
+```
+
+Pulse 可选，默认关闭：
+
+```bash
+aeng pulse
+aeng pulse --write
+```
+
 `aeng init` 从不覆盖已有的 `AGENTS.md`、`CLAUDE.md`、instruction、模块卡或工程文档。如果 `engineering/` 已存在，用 `--adopt-existing` 只补缺失文件。
+文档模板需要显式安装：`aeng docs init` 不会覆盖已有手册或风格文件。
 
 ## 让 coding agent 初始化项目
 
@@ -116,8 +134,9 @@ aeng report
 3. 不得覆盖任何已有 Agent 规则或工程 artefact。
 4. 执行 `aeng init --dry-run`，向我展示采用计划和冲突。
 5. 等我批准后再执行 `aeng init`；只有我批准采用现有 engineering/ 时才使用 --adopt-existing。
-6. 执行 `aeng check`，只修复初始化相关问题，再执行 `aeng report`。
-7. 总结安装了什么、保留了什么、哪些需要人工复核，以及哪些命令仍未知。
+6. 执行 `aeng check`。如果配置了文档，先预览再执行 `aeng docs init`，然后执行 `aeng docs check` 和 `aeng docs impact --base main`。
+7. 执行 `aeng report`。除非我明确批准，不要启用 Pulse。
+8. 总结安装了什么、保留了什么、哪些需要人工复核，以及哪些命令仍未知。
 ```
 
 Agent 必须读仓库，不得编造模块边界或测试成功结果。
@@ -149,6 +168,15 @@ engineering/
 .agent-engineering/
   adoption-report.md
   integration-block.md                 # 保留已有 Agent 契约时生成
+```
+
+文档模板通过 `aeng docs init` 单独安装：
+
+```text
+docs/
+  STYLE.md
+  TRACEABILITY.md
+  screenshot-index.md
 ```
 
 已有 instructions 不移动、不改写。框架规则放在独立命名空间，与项目或宿主规则共存。
@@ -222,6 +250,40 @@ ID 使用 `dec-YYYY-MM-DD-kebab-case-title`，避免并行 Agent 争抢全局编
 
 如果仓库本身包含 Agent 产品，再增加一条正交 eval 轨：工具 schema、角色可见性、权限、确认、golden trajectory 和最终 artifact。软件测试与 Agent eval 回答不同问题。
 
+## 文档治理
+
+框架把用户手册、内部技术文档和工程追踪分开：
+
+- 用户手册任务优先，不写内部实现细节。
+- `aeng docs impact` 把源码变化映射到候选页面和 doc gap。
+- `aeng docs check` 校验链接、溯源、截图和技术文档 frontmatter。
+- `aeng docs audit` 把结构检查与人工语义复核清单合并。
+- current 技术文档必须有复核日期、commit 和可解析的 source paths。
+- 截图必须针对目标 build 人工验证。
+- 搜索索引默认是发布产物，除非项目明确选择其他策略。
+
+阅读 [docs/DOCUMENTATION.md](docs/DOCUMENTATION.md) 和 [docs/DOCUMENT_AUDIT.md](docs/DOCUMENT_AUDIT.md)。
+
+## Pulse
+
+`aeng pulse` 从 Plan、模块卡、Decision、人工测试和文档指标生成进度快照。
+
+- `latest.json` 是持久比较基线。
+- 自动生成带日期的 Markdown 报告。
+- CI artifact 只有被保留或提交后，才能成为下一轮基线。
+- Pulse 可选，默认关闭。
+
+阅读 [docs/PULSE.md](docs/PULSE.md)。
+
+## 适用项目
+
+- **个人或原型**：最小 profile，不排期 Pulse。
+- **小团队或维护型产品**：标准 profile，文档检查和可选每周 Pulse。
+- **多团队或多仓**：明确 owner、保留基线、隔离 worktree。
+- **强合规或安全关键**：框架可辅助证据管理，不能替代合规系统。
+
+阅读 [docs/APPLICABILITY.md](docs/APPLICABILITY.md)。
+
 ## 哪些直接用，哪些谨慎用
 
 ### 可直接复用
@@ -266,6 +328,12 @@ ID 使用 `dec-YYYY-MM-DD-kebab-case-title`，避免并行 Agent 争抢全局编
 | `aeng check` | 无效或过期事实返回失败 |
 | `aeng index` | 重生成索引和 `PROJECT.md` |
 | `aeng report` | 输出派生进度 |
+| `aeng docs init` | 安装缺失的文档模板 |
+| `aeng docs impact` | 把源码变化映射到文档候选 |
+| `aeng docs check` | 校验文档结构和溯源 |
+| `aeng docs audit` | 生成结构审计与人工复核清单 |
+| `aeng pulse` | 生成进度快照 |
+| `aeng pulse --write` | 持久化基线和带日期报告 |
 | `aeng plan new` | 创建 Plan |
 | `aeng plan add-slice` | 增加原子切片 |
 | `aeng plan set-slice` | 更新状态和证据 |
@@ -285,6 +353,10 @@ ID 使用 `dec-YYYY-MM-DD-kebab-case-title`，避免并行 Agent 争抢全局编
 - [Agent 初始化提示词](docs/AGENT_INITIALIZATION.md)
 - [采用与迁移指南](docs/ADOPTION_GUIDE.md)
 - [配置参考](docs/CONFIGURATION.md)
+- [文档治理](docs/DOCUMENTATION.md)
+- [文档审计](docs/DOCUMENT_AUDIT.md)
+- [Pulse](docs/PULSE.md)
+- [适用项目](docs/APPLICABILITY.md)
 - [生命周期与完成门](docs/LIFECYCLE.md)
 - [测试策略](docs/TESTING.md)
 - [安全](SECURITY.md)
@@ -292,11 +364,12 @@ ID 使用 `dec-YYYY-MM-DD-kebab-case-title`，避免并行 Agent 争抢全局编
 
 ## 当前限制
 
-0.1 有意保持较小：
+0.2 有意保持较小：
 
 - 测试选择基于路径，不是依赖图。
 - Markdown 切片解析要求约定的表格结构。
 - GitHub 集成走 CLI 且可选，没有托管同步服务。
+- Pulse 需要显式保留基线，才能做连续比较。
 - 没有 GUI、dashboard 服务或多仓 `moved` 工作流。
 - 尚未提供 JSON Schema 文件；校验在 CLI 和测试中。
 - 示例是合成数据，不证明适用于所有技术栈。

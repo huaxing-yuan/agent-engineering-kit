@@ -105,6 +105,47 @@ Fallback is conservative. It prevents a heuristic from silently skipping the fas
 
 Set `issue_required: false` when the project intentionally has no issue tracker.
 
+## Documentation
+
+Optional section:
+
+```yaml
+documentation:
+  root: docs
+  locales: [en]
+  translation_policy: declared-only
+  build_command: ""
+  pages:
+    - path: docs/api.md
+      source_patterns: [src/api/**]
+  screenshots:
+    index: docs/screenshot-index.md
+    required: false
+  search_index:
+    generated_at: release
+    committed: false
+```
+
+- `pages` maps source changes to documentation candidates.
+- `locales` are the manual locales reported by docs commands.
+- `translation_policy` accepts `none`, `declared-only`, `readmes-only`, or `full`.
+- `build_command` runs only with `aeng docs check --build`.
+- Screenshot paths are relative to the documentation root.
+- `search_index` records policy; it does not generate an index.
+
+See [DOCUMENTATION.md](DOCUMENTATION.md).
+
+## Pulse
+
+```yaml
+pulse:
+  enabled: true
+  stale_days: 7
+```
+
+Disabled by default. When enabled, `aeng check` warns if `engineering/pulse/latest.json` is missing or stale.
+See [PULSE.md](PULSE.md).
+
 ## Discovery metadata
 
 `discovery` is informational. Remove it or keep it; the validator does not treat it as architecture evidence.

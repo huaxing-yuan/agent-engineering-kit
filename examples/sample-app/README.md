@@ -9,6 +9,7 @@ From the repository root:
 ```bash
 python -m pip install -e .
 aeng --root examples/sample-app check
+aeng --root examples/sample-app docs check
 aeng --root examples/sample-app report
 python -m unittest discover -s examples/sample-app/tests -v
 ```

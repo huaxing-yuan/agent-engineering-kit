@@ -26,14 +26,23 @@
 | Governance check | CLI and validation | stable | yes | yes | Frontmatter, indexes, links, expiry, stale warnings; first public CI 4/4 green |
 | Progress report | CLI and validation | stable | yes | yes | Derived next slice and backlog |
 | Test selection | CLI and validation | preview | yes | yes | Path-based; conservative fallback; no dependency graph |
+| Documentation impact | CLI and validation | stable | yes | yes | Source-to-page mapping with explicit semantic-review boundary |
+| Documentation check | CLI and validation | stable | yes | yes | Links, traceability, screenshots, and technical-note metadata |
+| Documentation audit | CLI and validation | stable | yes | yes | Structural findings plus mandatory human checklist |
+| Pulse | CLI and validation | stable | yes | yes | Persistent latest.json baseline and dated Markdown report |
 | Trilingual README | Documentation | stable | yes | yes | English, French, and Simplified Chinese |
 | Agent initialization prompt | Documentation | stable | yes | yes | Copyable survey/approval workflow |
 | Adoption guide | Documentation | stable | yes | yes | Reuse/adapt/caution and legacy migration |
 | Configuration reference | Documentation | stable | yes | yes | All supported configuration fields |
 | Lifecycle guide | Documentation | stable | yes | yes | Plan, decision, manual test, completion gate |
 | Testing guide | Documentation | stable | yes | yes | Layer routing and agent evaluation |
+| Documentation governance | Documentation | stable | yes | yes | User manual, internal notes, traceability, screenshots |
+| Documentation audit | Documentation | stable | yes | yes | Structural checks separated from semantic review |
+| Pulse guide | Documentation | stable | yes | yes | Persistent baseline and CI artifact limits |
+| Applicability guide | Documentation | stable | yes | yes | Personal, small-team, multi-team, and regulated profiles |
 | Total calculation | Sample application | stable | yes | yes | Empty, absent, and summed inputs |
 | Governance lifecycle | Sample application | stable | yes | yes | Clean init, plan, decision, check, report |
+| Documentation lifecycle | Sample application | stable | yes | yes | Docs init, impact mapping, and structural check |
 | Percentage discounts | Sample application | planned | no | no | Draft plan intentionally remains unlanded |
 | Root agent contract | Templates | stable | yes | yes | Canonical AGENTS with thin CLAUDE pointer |
 | Area instructions | Templates | stable | yes | yes | Namespaced, path-routed, stack-agnostic |
@@ -41,6 +50,8 @@
 | Decision template | Templates | stable | yes | yes | Reopen condition and optional guard |
 | Manual-test template | Templates | stable | yes | yes | Human confirmation and build |
 | Verification matrix | Templates | stable | yes | yes | Static through manual layers |
+| Documentation templates | Templates | stable | yes | yes | Explicit docs init; existing manuals preserved |
+| Technical-note template | Templates | stable | yes | yes | Review date, commit, owners, and source paths |
 
 ## Plan summary
 
@@ -62,6 +73,6 @@
 ## Verification summary
 
 - Manual checks: 0 total; 0 pending; 0 failed; 0 blocked.
-- Durable decisions: 3.
+- Durable decisions: 6.
 - Test commands and broad-change fallbacks: `.agent-engineering.yaml`.
 <!-- AENG:PROJECT:END -->

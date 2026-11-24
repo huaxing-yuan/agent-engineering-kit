@@ -13,6 +13,7 @@ updated: '2026-11-24'
 |---|---|---|---|---|
 | Total calculation | stable | yes | yes | Empty, absent, and summed inputs |
 | Governance lifecycle | stable | yes | yes | Clean init, plan, decision, check, report |
+| Documentation lifecycle | stable | yes | yes | Docs init, impact mapping, and structural check |
 | Percentage discounts | planned | no | no | Draft plan intentionally remains unlanded |
 
 ## Active plans

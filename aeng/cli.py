@@ -10,7 +10,13 @@ import yaml
 
 from . import __version__
 from .config import CONFIG_NAME, discover, dump_config, load_config, validate_config
-from .documents import today
+from .docs import (
+    check_documentation,
+    documentation_impact,
+    initialize_docs,
+    render_audit_markdown,
+    render_impact_markdown,
+)
 from .indexes import update_indexes
 from .initializer import initialize_project
 from .lifecycle import (
@@ -23,6 +29,7 @@ from .lifecycle import (
     set_plan_status,
     set_slice,
 )
+from .pulse import collect_pulse, render_pulse_markdown, write_pulse
 from .report import collect_report, render_json, render_markdown
 from .test_selector import run_selection, select_tests
 from .validator import validate
@@ -50,6 +57,26 @@ def build_parser() -> argparse.ArgumentParser:
     report_parser = sub.add_parser("report", help="Print a derived progress report")
     report_parser.add_argument("--json", action="store_true")
     report_parser.add_argument("--output")
+
+    docs = sub.add_parser("docs", help="Analyze and validate user and internal documentation")
+    docs_sub = docs.add_subparsers(dest="docs_command", required=True)
+    docs_init = docs_sub.add_parser("init", help="Install missing documentation templates")
+    docs_init.add_argument("--dry-run", action="store_true")
+    docs_impact = docs_sub.add_parser("impact", help="Map changed source files to documentation pages")
+    docs_impact.add_argument("--base")
+    docs_impact.add_argument("--json", action="store_true")
+    docs_impact.add_argument("--output")
+    docs_check = docs_sub.add_parser("check", help="Check links, traceability, screenshots, and technical notes")
+    docs_check.add_argument("--build", action="store_true")
+    docs_check.add_argument("--json", action="store_true")
+    docs_audit = docs_sub.add_parser("audit", help="Write a structural documentation audit with human review checklist")
+    docs_audit.add_argument("--base")
+    docs_audit.add_argument("--output")
+
+    pulse_parser = sub.add_parser("pulse", help="Generate a persistent engineering baseline and progression report")
+    pulse_parser.add_argument("--write", action="store_true")
+    pulse_parser.add_argument("--json", action="store_true")
+    pulse_parser.add_argument("--output-dir", default="engineering/pulse")
 
     plan = sub.add_parser("plan", help="Manage active plans")
     plan_sub = plan.add_subparsers(dest="plan_command", required=True)
@@ -171,6 +198,54 @@ def dispatch(args: argparse.Namespace, root: Path) -> int:
             _write_output(text, str(output_path if output_path.is_absolute() else root / output_path))
         else:
             print(text, end="" if text.endswith("\n") else "\n")
+        return 0
+
+    if args.command == "docs":
+        config = load_config(root)
+        if args.docs_command == "init":
+            print(initialize_docs(root, config, args.dry_run))
+            return 0
+        if args.docs_command == "impact":
+            data = documentation_impact(root, config, args.base)
+            text = json.dumps(data, indent=2, ensure_ascii=False) if args.json else render_impact_markdown(data)
+            if args.output:
+                output = Path(args.output)
+                _write_output(text, str(output if output.is_absolute() else root / output))
+            else:
+                print(text, end="" if text.endswith("\n") else "\n")
+            return 0
+        if args.docs_command == "check":
+            errors, warnings, metrics = check_documentation(root, config, args.build)
+            if args.json:
+                print(json.dumps({"errors": errors, "warnings": warnings, "metrics": metrics}, indent=2, ensure_ascii=False))
+            else:
+                for warning in warnings:
+                    print(f"WARN  {warning}")
+                for error in errors:
+                    print(f"FAIL  {error}")
+                print(f"Documentation check: {len(errors)} error(s), {len(warnings)} warning(s).")
+            return 1 if errors else 0
+        text = render_audit_markdown(root, config, args.base)
+        if args.output:
+            output = Path(args.output)
+            _write_output(text, str(output if output.is_absolute() else root / output))
+        else:
+            print(text, end="" if text.endswith("\n") else "\n")
+        return 0
+
+    if args.command == "pulse":
+        config = load_config(root)
+        if args.write:
+            latest, report, data = write_pulse(root, config, args.output_dir)
+            print(f"Wrote {latest.relative_to(root).as_posix()}")
+            print(f"Wrote {report.relative_to(root).as_posix()}")
+            if args.json:
+                print(json.dumps(data, indent=2, ensure_ascii=False))
+            else:
+                print(render_pulse_markdown(data), end="")
+            return 0
+        data = collect_pulse(root, config)
+        print(json.dumps(data, indent=2, ensure_ascii=False) if args.json else render_pulse_markdown(data))
         return 0
 
     if args.command == "plan":

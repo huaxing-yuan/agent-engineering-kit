@@ -17,6 +17,10 @@ updated: '2026-11-24'
 | Configuration reference | stable | yes | yes | All supported configuration fields |
 | Lifecycle guide | stable | yes | yes | Plan, decision, manual test, completion gate |
 | Testing guide | stable | yes | yes | Layer routing and agent evaluation |
+| Documentation governance | stable | yes | yes | User manual, internal notes, traceability, screenshots |
+| Documentation audit | stable | yes | yes | Structural checks separated from semantic review |
+| Pulse guide | stable | yes | yes | Persistent baseline and CI artifact limits |
+| Applicability guide | stable | yes | yes | Personal, small-team, multi-team, and regulated profiles |
 
 ## Active plans
 
@@ -24,7 +28,7 @@ None.
 
 ## KPI
 
-- Documentation coverage: three README entry points plus seven focused guides.
+- Documentation coverage: three README entry points plus ten focused guides.
 - Test evidence: published-source sanitization, CI link/runtime checks, and fresh-clone verification.
 - Last maturity review: 2026-11-24.
 

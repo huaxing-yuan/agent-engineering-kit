@@ -33,6 +33,9 @@ Decision values: `accepted | rejected | deferred | superseded`.
 | ID | Title | Module | Decision | Date |
 |---|---|---|---|---|
 | [dec-2026-11-24-decision-ids-do-not-use-global-sequence-numbers](dec-2026-11-24-decision-ids-do-not-use-global-sequence-numbers.md) | Decision ids do not use global sequence numbers | cli | accepted | 2026-11-24 |
+| [dec-2026-11-24-documentation-impact-is-structural-not-semantic](dec-2026-11-24-documentation-impact-is-structural-not-semantic.md) | Documentation impact is structural not semantic | cli | accepted | 2026-11-24 |
+| [dec-2026-11-24-documentation-planes-stay-separate](dec-2026-11-24-documentation-planes-stay-separate.md) | Documentation planes stay separate | docs | accepted | 2026-11-24 |
 | [dec-2026-11-24-files-are-the-portable-contract](dec-2026-11-24-files-are-the-portable-contract.md) | Files are the portable contract | cli | accepted | 2026-11-24 |
 | [dec-2026-11-24-initialization-preserves-existing-rules](dec-2026-11-24-initialization-preserves-existing-rules.md) | Initialization preserves existing rules | templates | accepted | 2026-11-24 |
+| [dec-2026-11-24-pulse-requires-a-retained-baseline](dec-2026-11-24-pulse-requires-a-retained-baseline.md) | Pulse requires a retained baseline | cli | accepted | 2026-11-24 |
 <!-- AENG:DECISIONS:END -->

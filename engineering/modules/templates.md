@@ -17,6 +17,8 @@ updated: '2026-11-24'
 | Decision template | stable | yes | yes | Reopen condition and optional guard |
 | Manual-test template | stable | yes | yes | Human confirmation and build |
 | Verification matrix | stable | yes | yes | Static through manual layers |
+| Documentation templates | stable | yes | yes | Explicit docs init; existing manuals preserved |
+| Technical-note template | stable | yes | yes | Review date, commit, owners, and source paths |
 
 ## Active plans
 

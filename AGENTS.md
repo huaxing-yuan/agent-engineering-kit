@@ -86,6 +86,8 @@ Classify the change before coding: contract/domain, adapter/integration, UI beha
 ## 9. Definition of Done
 
 A task is done only when its required code, tests, documentation, manual verification, and engineering write-back are complete.
+For user-visible changes, run `aeng docs impact`, update mapped pages or record a doc gap, and run `aeng docs check`.
+Keep user manuals separate from `engineering/technical/`; use traceability comments instead of internal names in visible prose.
 Run `aeng check` before declaring completion. Warnings require review; failures block completion.
 When a plan finishes, capture durable rulings, move as-built knowledge to `engineering/technical/`, retire the plan, and regenerate indexes.
 

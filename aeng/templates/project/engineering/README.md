@@ -53,6 +53,27 @@ This directory is the project's durable management memory. It is independent of 
 Only explicit human confirmation permits `verified`. Record the exact build in `verified_in`.
 Open entries appear in the generated index. Verified and obsolete files remain as evidence but leave the work list.
 
+## Documentation governance
+
+User manuals live in the configured documentation root. Internal technical notes live in `technical/`.
+
+- User pages are task-first and contain no internal implementation details.
+- Current technical notes require a review date, commit, and resolvable source paths.
+- User-visible changes report documentation impact in the same task.
+- `aeng docs impact` maps source changes to candidate pages; it does not decide semantic truth.
+- `aeng docs check` validates links, traceability, screenshots, and technical-note frontmatter.
+- `aeng docs audit` writes structural findings and a human review checklist.
+- Screenshots require build-specific human verification.
+- Search indexes are release artifacts unless the project explicitly decides otherwise.
+
+## Pulse
+
+`aeng pulse` derives a snapshot from plans, module cards, decisions, manual tests, and documentation metrics.
+`aeng pulse --write` updates `engineering/pulse/latest.json` and a dated Markdown report.
+
+The latest JSON is the persistent comparison baseline. A CI artifact is not a baseline until it is retained or committed.
+Pulse shows movement and aging; it cannot prove code completeness, semantic documentation accuracy, or runtime verification.
+
 ## Suggested budgets
 
 - Root `AGENTS.md`: 120–150 lines.

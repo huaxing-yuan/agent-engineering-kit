@@ -88,7 +88,7 @@ def parse_table(text: str, heading: str) -> tuple[list[str], list[dict[str, str]
         if all(re.fullmatch(r":?-{3,}:?", cell or " ") for cell in cells):
             continue
         if not headers:
-            headers = [cell.lower() for cell in cells]
+            headers = [re.sub(r"\s+", "_", cell.lower()) for cell in cells]
             continue
         if len(cells) != len(headers):
             continue
@@ -114,7 +114,7 @@ def set_table_row(text: str, heading: str, row_id: str, updates: dict[str, str])
         if all(re.fullmatch(r":?-{3,}:?", cell or " ") for cell in cells):
             continue
         if not headers:
-            headers = [cell.lower() for cell in cells]
+            headers = [re.sub(r"\s+", "_", cell.lower()) for cell in cells]
             id_column = headers.index("id")
             continue
         if len(cells) != len(headers):
@@ -149,7 +149,7 @@ def append_table_row(text: str, heading: str, row: dict[str, str]) -> str:
         if all(re.fullmatch(r":?-{3,}:?", cell or " ") for cell in cells):
             continue
         if not headers:
-            headers = [cell.lower() for cell in cells]
+            headers = [re.sub(r"\s+", "_", cell.lower()) for cell in cells]
         insert_at = i + 1
     if not headers:
         raise ValueError(f"Missing table header in {heading}")

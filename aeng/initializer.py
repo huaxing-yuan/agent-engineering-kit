@@ -4,7 +4,6 @@ from importlib.resources import files
 from pathlib import Path
 from typing import Any
 
-from .config import load_config
 from .documents import render_template, today, write_document
 from .indexes import update_indexes
 
@@ -94,7 +93,7 @@ def plan_initialization(root: Path, config: dict[str, Any], adopt_existing: bool
     template = _template_root()
     for item in _template_files(template):
         relative = _destination_relative(item.relative_to(template).as_posix())
-        if relative in {"AGENTS.md", "CLAUDE.md"}:
+        if relative in {"AGENTS.md", "CLAUDE.md"} or relative.startswith("docs/"):
             continue
         path = root / relative
         if path.exists():
@@ -122,6 +121,8 @@ def plan_initialization(root: Path, config: dict[str, Any], adopt_existing: bool
         notes.append("Existing instruction files remain authoritative for their scope: " + ", ".join(instructions))
     if not config["test"].get("default_command"):
         notes.append("No test command was discovered. Set test.default_command before using test selection.")
+    if config.get("documentation"):
+        notes.append("Documentation templates are explicit: run 'aeng docs init' after reviewing the documentation root.")
     return actions, notes
 
 
@@ -142,7 +143,7 @@ def initialize_project(root: Path, config: dict[str, Any], adopt_existing: bool 
     template = _template_root()
     for item in _template_files(template):
         relative = _destination_relative(item.relative_to(template).as_posix())
-        if relative in {"AGENTS.md", "CLAUDE.md"}:
+        if relative in {"AGENTS.md", "CLAUDE.md"} or relative.startswith("docs/"):
             continue
         destination = root / relative
         if destination.exists():

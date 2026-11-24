@@ -8,6 +8,7 @@ from typing import Any
 import yaml
 
 from .config import load_config
+from .docs import check_documentation, technical_notes
 from .documents import parse_document, parse_table
 from .indexes import generated_documents
 
@@ -219,6 +220,30 @@ def validate(root: Path) -> tuple[list[str], list[str]]:
         for target in _markdown_links(text):
             if not (path.parent / target).exists():
                 errors.append(f"{path.relative_to(root)}: dead link -> {target}")
+
+    if config.get("documentation"):
+        doc_errors, doc_warnings, _ = check_documentation(root, config)
+        errors.extend(doc_errors)
+        warnings.extend(doc_warnings)
+    else:
+        _, technical_errors = technical_notes(root)
+        errors.extend(technical_errors)
+
+    pulse_config = config.get("pulse", {})
+    if pulse_config.get("enabled"):
+        latest = engineering / "pulse/latest.json"
+        if not latest.exists():
+            warnings.append("pulse is enabled but engineering/pulse/latest.json has no baseline")
+        else:
+            try:
+                baseline = yaml.safe_load(latest.read_text(encoding="utf-8"))
+                generated = _date(baseline.get("generated"))
+                if not generated:
+                    errors.append("engineering/pulse/latest.json: generated must be YYYY-MM-DD")
+                elif (now - generated).days > pulse_config.get("stale_days", 7):
+                    warnings.append(f"pulse baseline is {(now - generated).days} days old")
+            except (yaml.YAMLError, AttributeError) as exc:
+                errors.append(f"engineering/pulse/latest.json: {exc}")
 
     if not (root / "AGENTS.md").exists():
         errors.append("AGENTS.md is missing")
