@@ -1,8 +1,8 @@
 ---
 id: framework-architecture
-status: proposed
+status: current
 updated: 2026-11-24
-reviewed_against: ""
+reviewed_against: 9f34683739bd37b58f93b9a1a9e1a66ed981d434
 owners: [cli, templates, docs]
 source_paths:
   - aeng/cli.py
@@ -27,7 +27,7 @@ The generic governance CLI, installable templates, documentation checks, and Pul
 ## Evidence
 
 The architecture is defined by the source paths above and protected by the framework test suite.
-This note remains proposed until the v0.2 feature commit is available for review.
+It was reviewed against commit `9f34683` and verified by the v0.2 hosted CI matrix.
 
 ## Current design
 

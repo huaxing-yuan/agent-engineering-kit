@@ -1,8 +1,8 @@
 {
   "version": 1,
   "generated": "2026-11-24",
-  "previous": null,
-  "head": "6133b23",
+  "previous": "2026-11-24",
+  "head": "9f34683",
   "branch": "main",
   "project": "agent-engineering-kit",
   "plans": [],
@@ -25,8 +25,8 @@
       "verified": 0
     },
     "technical_notes": {
-      "current": 0,
-      "proposed": 1,
+      "current": 1,
+      "proposed": 0,
       "superseded": 0
     },
     "doc_gaps": 0
@@ -76,7 +76,7 @@
     "retired_plans": [],
     "changed_plans": []
   },
-  "baseline": true,
+  "baseline": false,
   "limits": [
     "Plan movement is inferred from plan metadata and slice status, not code completeness.",
     "Documentation metrics are structural; semantic truth requires human review.",
