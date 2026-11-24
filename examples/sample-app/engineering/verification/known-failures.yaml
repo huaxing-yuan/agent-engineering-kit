@@ -1,0 +1,3 @@
+# Known failures are temporary, owned, and exact.
+# An expired entry stops being an allowlist.
+failures: []

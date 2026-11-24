@@ -1,0 +1,54 @@
+version: 1
+project:
+  name: agent-engineering-kit
+  description: A harness-agnostic project memory and verification system for coding agents.
+  languages: [python]
+  documentation_languages: [en, fr, zh-CN]
+  source_roots: [aeng, examples, tests]
+  docs_root: docs
+modules:
+  - id: cli
+    name: CLI and validation
+    paths: [aeng/**, tests/**]
+    responsibility: Discovery, safe initialization, lifecycle commands, validation, reports, and test selection.
+  - id: templates
+    name: Templates
+    paths: [aeng/templates/**]
+    responsibility: Installable project contracts and engineering artifacts.
+  - id: docs
+    name: Documentation
+    paths: [docs/**, README.md, README.fr.md, README.zh-CN.md, roles/**]
+    responsibility: English, French, and Chinese adoption guidance.
+  - id: sample
+    name: Sample application
+    paths: [examples/**]
+    responsibility: A synthetic runnable example of the governance lifecycle.
+test:
+  default_command: python -m unittest discover -s tests -v
+  fast_command: python -m unittest discover -s tests -v
+  full_command: python -m unittest discover -s tests -v
+  areas:
+    cli: [aeng/**, tests/**]
+    templates: [aeng/templates/**]
+    docs: [docs/**, README.md, README.fr.md, README.zh-CN.md, roles/**]
+    sample: [examples/**]
+  area_commands: {}
+  broad_change:
+    paths: [pyproject.toml, .agent-engineering.yaml, .github/workflows/**, tests/**]
+    max_files: 30
+    max_modules: 4
+verification:
+  stale_days: 30
+  ui: false
+existing:
+  agent_files: []
+  instruction_files: []
+  preserve_existing: true
+github:
+  issue_required: true
+  manual_test_label: manual testing
+commands:
+  build: python -m compileall -q aeng
+  lint: ""
+discovery:
+  review_required: false

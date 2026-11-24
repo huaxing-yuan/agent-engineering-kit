@@ -1,0 +1,39 @@
+version: 1
+project:
+  name: sample-app
+  description: A synthetic calculation service used to demonstrate repository-native agent governance.
+  languages: [python]
+  documentation_languages: [en]
+  source_roots: [src]
+  docs_root: docs
+modules:
+  - id: core
+    name: Core
+    paths: [src/sample_app/**]
+    responsibility: Pure calculation rules and validation.
+test:
+  default_command: python -m unittest discover -s tests -v
+  fast_command: python -m unittest discover -s tests -v
+  full_command: python -m unittest discover -s tests -v
+  areas:
+    core: [src/sample_app/**]
+  area_commands: {}
+  broad_change:
+    paths: [pyproject.toml, tests/**, "*.sln", "*.slnx"]
+    max_files: 30
+    max_modules: 4
+verification:
+  stale_days: 30
+  ui: false
+existing:
+  agent_files: []
+  instruction_files: []
+  preserve_existing: true
+github:
+  issue_required: true
+  manual_test_label: manual testing
+commands:
+  build: python -m compileall src
+  lint: ""
+discovery:
+  review_required: false

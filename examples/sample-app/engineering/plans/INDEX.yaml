@@ -1,0 +1,8 @@
+plans:
+- id: add-percentage-discounts
+  file: add-percentage-discounts.md
+  module: core
+  type: plan
+  status: draft
+  updated: '2026-11-24'
+  progress: 0/2

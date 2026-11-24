@@ -1,0 +1,37 @@
+version: 1
+layers:
+  - id: static
+    question: Are formatting, links, schemas, and governance files consistent?
+    command: aeng check
+    environment: local-or-ci
+    blocking: true
+  - id: unit
+    question: Are pure logic and edge cases correct?
+    command: "{{UNIT_COMMAND}}"
+    environment: isolated
+    blocking: true
+  - id: integration
+    question: Do modules and ephemeral dependencies work together?
+    command: "{{INTEGRATION_COMMAND}}"
+    environment: reproducible
+    blocking: true
+  - id: headless
+    question: Does real application and UI behavior work without OS chrome?
+    command: "{{HEADLESS_COMMAND}}"
+    environment: headless
+    blocking: false
+  - id: e2e
+    question: Do packaging, OS integration, focus, and accessibility work?
+    command: "{{E2E_COMMAND}}"
+    environment: real-process
+    blocking: false
+  - id: live
+    question: Does the real external service or paid provider behave as expected?
+    command: "{{LIVE_COMMAND}}"
+    environment: explicit-opt-in
+    blocking: false
+  - id: manual
+    question: What still requires human judgment or real hardware/accounts?
+    command: aeng report
+    environment: human
+    blocking: true
